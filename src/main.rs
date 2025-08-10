@@ -26,9 +26,14 @@ fn test_median() {
  */
 fn to_pig_latin(s: &str) -> String {
     let mut rtn = String::new();
+    let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+
     for p in String::from(s).split(" ") {
-        rtn.push_str(p);
-        rtn.push_str(" ");
+        if p.starts_with(vowels) {
+            rtn.push_str(p);
+        }else {
+            rtn.push_str("-");
+        }
     }
     rtn
 }
