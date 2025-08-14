@@ -31,6 +31,10 @@ fn to_pig_latin(s: &str) -> String {
     for p in String::from(s).split(" ") {
         if p.starts_with(vowels) {
             rtn.push_str(p);
+            rtn.push_str("-fay");
+            rtn.push_str(" ");
+            rtn = rtn + p + "-fay ";
+            //rtn.push_str();
         }else {
             rtn.push_str("-");
         }
