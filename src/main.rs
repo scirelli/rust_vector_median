@@ -40,8 +40,8 @@ fn to_pig_latin(s: &str) -> String {
             p = chars.as_str();
         }
 
-        if p.starts_with(vowels) {
-            buf = buf + p + " -fay";
+        if p.to_lowercase().starts_with(vowels) {
+            buf = buf + p + "-hay";
         }else {
             buf = buf + &p[1..] + "-" + &p[0..1] + "ay";
         }
