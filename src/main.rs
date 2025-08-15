@@ -30,13 +30,9 @@ fn to_pig_latin(s: &str) -> String {
 
     for p in String::from(s).split(" ") {
         if p.starts_with(vowels) {
-            rtn.push_str(p);
-            rtn.push_str("-fay");
-            rtn.push_str(" ");
-            rtn = rtn + p + "-fay ";
-            //rtn.push_str();
+            rtn = rtn + p + " -fay ";
         }else {
-            rtn.push_str("-");
+            rtn = rtn + &p[1..] + "-" + &p[0..1] + "ay";
         }
     }
     rtn
@@ -44,5 +40,5 @@ fn to_pig_latin(s: &str) -> String {
 
 fn main(){
     test_median();
-    println!("{}", to_pig_latin(&"steve speaks latin".to_string()));
+    println!("{}", to_pig_latin(&"a steve speaks latin".to_string()));
 }
