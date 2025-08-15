@@ -25,20 +25,35 @@ fn test_median() {
  * end instead (apple becomes apple-hay). Keep in mind the details about UTF-8 encoding!
  */
 fn to_pig_latin(s: &str) -> String {
-    let mut rtn = String::new();
+    let mut rtn: Vec<String> = Vec::new();
     let vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
+    let punct = ['!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'];
+    let mut buf:String;
 
-    for p in String::from(s).split(" ") {
-        if p.starts_with(vowels) {
-            rtn = rtn + p + " -fay ";
-        }else {
-            rtn = rtn + &p[1..] + "-" + &p[0..1] + "ay";
+    for mut p in String::from(s).split(" ") {
+        let mut opt_char:Option<char> = None;
+        buf = String::new();
+
+        if p.ends_with(punct) {
+            let mut chars = p.chars();
+            opt_char = chars.next_back();
+            p = chars.as_str();
         }
+
+        if p.starts_with(vowels) {
+            buf = buf + p + " -fay";
+        }else {
+            buf = buf + &p[1..] + "-" + &p[0..1] + "ay";
+        }
+        if let Some(c) = opt_char {
+            buf.push(c);
+        }
+        rtn.push(buf);
     }
-    rtn
+    rtn.join(" ")
 }
 
 fn main(){
     test_median();
-    println!("{}", to_pig_latin(&"a steve speaks latin".to_string()));
+    println!("{}", to_pig_latin(&"Steve speaks latin. I do not.".to_string()));
 }
