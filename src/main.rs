@@ -1,4 +1,5 @@
 mod math;
+mod company;
 
 /**
  * Given a list of integers, use a vector and return the median (when sorted, the value in the
@@ -59,10 +60,14 @@ fn to_pig_latin(s: &str) -> String {
  * Then let the user retrieve a list of all people in a department or all people in the company
  * by department, sorted alphabetically.
  */
-fn add_employee_to_department() {
+fn start_company_db() -> () {
+    let mut c = company::Company::new();
+    c.database.insert("Cirelli".to_string(), "Steve Cirelli".to_string());
+    println!("{}", c.database.get("Cirelli").unwrap_or(&"".to_string()));
 }
 
-fn main(){
+fn main() {
     test_median();
     println!("{}", to_pig_latin(&"Steve speaks latin. I do not.".to_string()));
+    start_company_db();
 }
