@@ -1,3 +1,4 @@
+use std::io;
 mod math;
 mod company;
 
@@ -62,8 +63,25 @@ fn to_pig_latin(s: &str) -> String {
  */
 fn start_company_db() -> () {
     let mut c = company::Company::new();
-    c.database.insert("Cirelli".to_string(), "Steve Cirelli".to_string());
-    println!("{}", c.database.get("Cirelli").unwrap_or(&"".to_string()));
+    c.database.insert("Cirelli".to_string(), Vec::from(["Steve Cirelli".to_string()]));
+    println!("{:?}", c.database.get("Cirelli").unwrap_or(&Vec::from([])));
+    let e = read_user_input();
+    println!("{} {}", e.name, e.department);
+}
+
+fn read_user_input() -> company::Entry {
+    let mut inp = String::new();
+
+    io::stdin()
+        .read_line(&mut inp)
+        .expect("Failed to read line");
+
+    let p:Vec<&str> = inp.split(" ").collect();
+
+    company::Entry{
+        name: p[1].to_string(),
+        department: p[3].to_string(),
+    }
 }
 
 fn main() {
