@@ -65,11 +65,11 @@ fn start_company_db() -> () {
     let mut c = company::Company::new();
     c.database.insert("Cirelli".to_string(), Vec::from(["Steve Cirelli".to_string()]));
     println!("{:?}", c.database.get("Cirelli").unwrap_or(&Vec::from([])));
-    let e = read_user_input();
+    let e = parse_add_user();
     println!("{} {}", e.name, e.department);
 }
 
-fn read_user_input() -> company::Entry {
+fn parse_add_user() -> company::Entry {
     let mut inp = String::new();
 
     io::stdin()
