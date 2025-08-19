@@ -65,11 +65,11 @@ fn start_company_db() -> () {
     let mut c = company::Company::new();
     c.database.insert("Cirelli".to_string(), Vec::from(["Steve Cirelli".to_string()]));
     println!("{:?}", c.database.get("Cirelli").unwrap_or(&Vec::from([])));
-    let e = parse_add_user();
+    let e = parse_user_input();
     println!("{} {}", e.name, e.department);
 }
 
-fn parse_add_user() -> company::Entry {
+fn parse_user_input() -> company::Entry {
     let mut inp = String::new();
 
     io::stdin()
@@ -78,9 +78,22 @@ fn parse_add_user() -> company::Entry {
 
     let p:Vec<&str> = inp.split(" ").collect();
 
-    company::Entry{
-        name: p[1].to_string(),
-        department: p[3].to_string(),
+    match p[0] {
+        //Insert a person into a department
+        "Add" => company::Entry{
+            name: p[1].to_string(),
+            department: p[3].to_string(),
+        },
+        //List all people in the given department
+        "List" => company::Entry{
+            name: "".to_string(),
+            department: "".to_string(),
+        },
+        //Dump the DB
+        _ => company::Entry{
+            name: "".to_string(),
+            department: "".to_string(),
+        },
     }
 }
 
