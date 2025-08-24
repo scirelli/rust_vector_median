@@ -62,38 +62,56 @@ fn to_pig_latin(s: &str) -> String {
  * by department, sorted alphabetically.
  */
 fn start_company_db() -> () {
-    let mut c = company::Company::new();
-    c.database.insert("Cirelli".to_string(), Vec::from(["Steve Cirelli".to_string()]));
-    println!("{:?}", c.database.get("Cirelli").unwrap_or(&Vec::from([])));
-    let e = parse_user_input();
-    println!("{} {}", e.name, e.department);
+    parse_user_input();
 }
 
-fn parse_user_input() -> company::Entry {
-    let mut inp = String::new();
+fn parse_user_input() {
+    let mut c = company::Company::new();
 
-    io::stdin()
-        .read_line(&mut inp)
-        .expect("Failed to read line");
+    println!("Modify or view database.");
+    loop {
+        let mut inp = String::new();
+        io::stdin()
+            .read_line(&mut inp)
+            .expect("Failed to read line");
 
-    let p:Vec<&str> = inp.split(" ").collect();
+        let p:Vec<&str> = inp.split(" ").collect();
 
-    match p[0] {
-        //Insert a person into a department
-        "Add" => company::Entry{
-            name: p[1].to_string(),
-            department: p[3].to_string(),
-        },
-        //List all people in the given department
-        "List" => company::Entry{
-            name: "".to_string(),
-            department: "".to_string(),
-        },
-        //Dump the DB
-        _ => company::Entry{
-            name: "".to_string(),
-            department: "".to_string(),
-        },
+        match p[0].to_lowercase().trim() {
+            //Insert a person into a department
+            "add" => {
+                let k = p.get(3).unwrap_or(p.get(2).unwrap_or(p.get(1).unwrap_or(&"No Dept"))).trim().to_string();
+                let u = p.get(1).unwrap_or(&"No user").trim();
+                let l = c.database.entry(k.clone()).or_insert(Vec::new());
+                println!("\tAdding {u} to {k}");
+                l.push(u.to_string());
+            },
+            //List all people in the given department
+            "list" =>{
+                match p.get(1) {
+                    Some(d) => {
+                        let d = d.trim();
+                        println!("Listing department '{d}'");
+                        if let Some(v) = c.database.get(d) {
+                            println!("\t{}", v.join(", "));
+                        }
+                    },
+                    None => println!("You must provide a department to list.")
+                };
+            },
+            "exit" => {
+                println!("Exiting application.");
+                break;
+            },
+            //Dump the DB
+            _ => {
+                println!("Dumping the database");
+                for (key, value) in &c.database {
+                    println!("Department {key}:");
+                    println!("\t{}", value.join(", "));
+                }
+            }
+        };
     }
 }
 
